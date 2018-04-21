@@ -11,4 +11,4 @@ https://sifogrante.github.io/DataProductsWeek2/leaflet.html
 
 # Source code Repo
 
-https://github.com/sifogrante/DataProductsWeek2/blob/master/leaflet.html
+https://github.com/sifogrante/DataProductsWeek2/
