@@ -1,0 +1,46 @@
+---
+title: "Injuries by firearm in Mexico City, 2016"
+author: "Pablo Rodriguez Chavez"
+date: "April 21, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+We use the data from https://hoyodecrimen.com, which roughly translate to crime pit, or crime hole. This website visualizes historical crime data.
+
+```{r cache=TRUE}
+setwd("C:/Users/Pablo/Dropbox/DataProducts")
+
+if(!file.exists("cuadrantes.csv.zip"))
+  download.file("http://data.diegovalle.net/hoyodecrimen/cuadrantes.csv.zip", "cuadrantes.csv.zip")
+
+unzip("cuadrantes.csv.zip")
+datos<-read.csv("./clean-data/crime-lat-long.csv",header=TRUE,stringsAsFactors = FALSE)
+```
+
+We filter for firearm injuries during the year of 2016
+```{r cache=TRUE, echo=FALSE}
+library(dplyr)
+```
+```{r cache=TRUE}
+firearm.injuries<- datos %>% filter(crime=="LESIONES POR ARMA DE FUEGO", year==2016) 
+
+firearm.injuries<-firearm.injuries[complete.cases(firearm.injuries),]
+```
+
+Then we plot all the points
+```{r cache=TRUE}
+library(leaflet)
+names(firearm.injuries)[8]<-"lng"
+mymap<-firearm.injuries[,c(7:8)] %>%
+  leaflet() %>%
+  addTiles() %>%
+  addMarkers(clusterOptions= markerClusterOptions())
+mymap
+```
+
